@@ -1,0 +1,26 @@
+Nguồn dữ liệu và ghi công
+
+Tác giả: Rabie El Kharoua.
+Tên bộ dữ liệu: Predict Online Gaming Behavior Dataset.
+Phiên bản: 1; công bố năm 2024.
+URL: https://www.kaggle.com/datasets/rabieelkharoua/predict-online-gaming-behavior-dataset
+Tải và kiểm tra ngày 22/11/2026.
+Giấy phép: Creative Commons Attribution 4.0 International (CC BY 4.0).
+Văn bản giấy phép: https://creativecommons.org/licenses/by/4.0/
+
+CSV nguồn được giữ nguyên; SHA-256:
+63e63057d2984a0630d9af5457df564ac35af5ec0d9d7d82dad6a8e7097f4e15
+
+data/dataset_card.json là mô tả nguồn tải qua Kaggle API.
+data/metadata.json lưu kết quả tìm kiếm metadata tại thời điểm thực hiện.
+Data card và metadata xác nhận đây là dữ liệu tổng hợp dùng cho giáo dục.
+Dự án không tạo thêm dữ liệu người chơi và không tuyên bố đây là log thực tế.
+
+Các tệp trong outputs/ là kết quả biến đổi/phân tích do mã dự án tạo ra.
+Những đề xuất kinh doanh là giả thuyết cần kiểm chứng, không phải khuyến nghị
+hay sự xác nhận của tác giả dữ liệu.
+
+Giới hạn: thiếu số trận thắng/thua, số vật phẩm theo thời gian, điểm kỹ năng
+MMR/Elo và số tiền mua hàng. InGamePurchases chỉ có 0/1.
+PlayTimeHours và AvgSessionDurationMinutes mâu thuẫn với mô tả cùng đơn vị
+phiên; cần xác minh nguồn trước khi sử dụng trong vận hành.

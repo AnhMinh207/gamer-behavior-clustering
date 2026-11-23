@@ -1,0 +1,30 @@
+{
+  "passed": true,
+  "checks_count": 224,
+  "checks": [
+    "CSV nguyên bản khớp SHA-256",
+    "Split train tái lập đúng seed",
+    "Split holdout tái lập đúng seed",
+    "Train và holdout không giao nhau theo ID",
+    "Scaler khớp thống kê train, không fit toàn bộ dữ liệu",
+    "Không học ID, EngagementLevel hay cờ mua hàng",
+    "Nhãn 40.034 người khớp predict từ mô hình đã lưu",
+    "Tổng quy mô các cụm bằng số dòng dữ liệu",
+    "Trung bình đặc trưng và tỷ lệ mua của mọi cụm khớp dữ liệu gốc",
+    "Có đủ 3 phương pháp × 7 giá trị k",
+    "k KMeans khớp quy tắc chọn từ train",
+    "k Ward khớp quy tắc chọn từ train",
+    "k Ward_KMeans khớp quy tắc chọn từ train",
+    "Silhouette và DBI holdout được tính lại độc lập, khớp summary",
+    "Ví dụ người mới khớp mô hình, không cần fit",
+    "ZIP nội bộ hợp lệ: Bao_cao_Gamer_Clustering.docx",
+    "Tất cả XML đọc được: Bao_cao_Gamer_Clustering.docx",
+    "ZIP nội bộ hợp lệ: Bai_noi_va_Hoi_dap.docx",
+    "Tất cả XML đọc được: Bai_noi_va_Hoi_dap.docx",
+    "ZIP nội bộ hợp lệ: Thuyet_trinh_Gamer_Clustering.pptx",
+    "Tất cả XML đọc được: Thuyet_trinh_Gamer_Clustering.pptx",
+    "PowerPoint đủ 18 slide",
+    "Slide có lời nói đầy đủ trong Notes",
+    "Chữ trên slide dùng Arial (kể cả kế thừa đoạn)"
+  ]
+}

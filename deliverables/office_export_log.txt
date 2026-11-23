@@ -1,0 +1,8 @@
+﻿FINAL EXPORT VERIFIED 2026-11-22
+Word report: 20 pages, read-only PDF export successful.
+Word speech and Q&A: 9 pages, read-only PDF export successful.
+PowerPoint: 18 slides exported to PDF and slide_01.png ... slide_18.png.
+PowerPoint: Fade transitions; 96 automatic Fade content effects configured.
+All static slide previews and all Word PDF pages inspected.
+Live slide-show animation and presentation duration have not been observed.
+Earlier COM attempts stalled; final read-only exports completed successfully.

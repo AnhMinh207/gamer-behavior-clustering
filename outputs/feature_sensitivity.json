@@ -1,0 +1,9 @@
+{
+  "excluded": "PlayTimeHours",
+  "k_fixed": 8,
+  "ari_vs_main": 0.24582363760865006,
+  "silhouette": 0.2250307291680189,
+  "davies_bouldin": 1.1132163125695052,
+  "min_cluster_pct": 11.689771449981267,
+  "note": "Không gian khác nhau; không dùng Silhouette/DBI này để xếp hạng trực tiếp với mô hình chính."
+}

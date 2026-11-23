@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+outputs/.mplconfig/
+*.tmp
+~$*
+.env
+.env.*
+!.env.example
+data/dataset.zip
+outputs/write_check.txt
+deliverables/slide_previews/*.PNG
+!deliverables/slide_previews/slide_*.png

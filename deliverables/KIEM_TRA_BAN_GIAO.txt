@@ -1,0 +1,45 @@
+KIỂM TRA BÀN GIAO – 22/11/2026
+
+Đã thực hiện
+- Đọc toàn bộ tài liệu hướng dẫn đính kèm và đối chiếu các yêu cầu đề tài.
+- Tải CSV nguyên bản và data card/metadata trực tiếp từ Kaggle.
+- Chạy pipeline hoàn chỉnh trên 40.034 dòng; lưu log, môi trường, seed, ID mẫu.
+- So sánh K-Means, Agglomerative Ward và Ward khởi tạo K-Means, k = 2…8.
+- Chia train/holdout trước khi fit imputer và scaler; kiểm chứng lại thống kê scaler.
+- Kiểm chứng ID hai tập không giao nhau; không dùng EngagementLevel để học/chọn k.
+- Tính lại độc lập Silhouette và DBI holdout của mô hình cuối, khớp kết quả lưu.
+- Đối chiếu nhãn của toàn bộ 40.034 người với predict từ mô hình joblib.
+- Đối chiếu quy mô, trung bình đặc trưng và tỷ lệ có mua của từng cụm với CSV gốc.
+- Kiểm tra XML và cấu trúc ZIP nội bộ của các tệp Word/PowerPoint đọc được.
+- Xuất báo cáo Word thành PDF 20 trang; bài nói và hỏi đáp thành PDF 9 trang.
+- Xuất PowerPoint thành PDF và 18 ảnh; đã xem ảnh cả 18 slide và toàn bộ các trang PDF.
+- Slide dùng Arial, có Notes cho từng slide, chuyển Fade và 96 hiệu ứng Fade nội dung
+  được cấu hình tự chạy sau hiệu ứng trước; tiêu đề hiển thị sẵn.
+- Bài nói chia người 1 slide 1–7, người 2 slide 8–18; có 13 câu hỏi bảo vệ.
+- Kiểm tra số liệu bằng verify_outputs.py; kết quả tại outputs/verification.json.
+
+Kết quả chính đã xác minh
+- Ward + K-Means chọn k = 8 trong dải 2–8.
+- Holdout: Silhouette 0,154005; Davies–Bouldin 1,432188.
+- ARI trung bình khi đổi mẫu Ward: 0,313216; thấp nhất 0,261159.
+- Bỏ PlayTimeHours: ARI với mô hình chính 0,245824.
+
+Giới hạn và phần cần người dùng bổ sung
+- Chưa có tên trường/khoa, giảng viên, lớp, thành viên/MSSV hoặc mẫu bìa trường:
+  các chỗ này đang để [ngoặc vuông]. Bìa hiện tại không được xác nhận là mẫu trường.
+- Chưa có mẫu slide, dùng bố cục Arial tông xanh đậm/xanh ngọc.
+- Dữ liệu nguồn là tổng hợp do tác giả Kaggle công bố, không phải log thực tế.
+  Dự án không tự sinh dữ liệu mới. Báo cáo công bố rõ giới hạn này.
+- Thiếu wins/losses, số vật phẩm theo thời gian, điểm kỹ năng thật và số tiền mua:
+  chưa thể tính đầy đủ các chỉ số tương ứng trong đề hoặc xác nhận High-Spenders.
+- PlayTimeHours có vấn đề ngữ nghĩa; có phân tích độ nhạy, cần xác minh nguồn.
+- k = 8 là biên trên dải đã thử, chưa chứng minh số phân khúc tự nhiên tối ưu.
+- Silhouette còn thấp và phân hoạch nhạy với mẫu. Chiến lược là giả thuyết A/B test,
+  chưa được đánh giá doanh thu, ROI, tác động nhân quả hoặc hiệu quả ngoài thực tế.
+- Môi trường cài mới đã được tạo và pipeline đã chạy thật. Chưa kiểm tra trên mọi
+  hệ điều hành hoặc phiên bản Python khác; xem requirements.txt để tái lập.
+- Đã xem bản xuất tĩnh; chưa xem hiệu ứng chạy trực tiếp trong trình chiếu F5.
+  Người dùng cần chạy F5 và diễn tập để kiểm tra thời lượng 13–15 phút.
+- Mở Word và Ctrl+A, F9 để cập nhật mục lục/số trang sau khi sửa thông tin bìa.
+
+Các tệp PDF là bản xem thuận tiện; DOCX/PPTX là bản có thể chỉnh sửa.

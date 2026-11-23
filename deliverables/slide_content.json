@@ -1,0 +1,199 @@
+[
+  [
+    "Phân cụm hành vi người chơi",
+    [
+      "Gamer Behavior Clustering & Player Profiling",
+      "Ward + K-Means | Học phần Khai phá dữ liệu",
+      "[Thành viên 1 – MSSV]  •  [Thành viên 2 – MSSV]"
+    ],
+    null,
+    "Em chào thầy và các bạn. Nhóm em trình bày đề tài phân cụm hành vi và xây dựng hồ sơ người chơi. Mục tiêu là tìm các nhóm có cách chơi gần nhau, sau đó đề xuất cách giới thiệu nội dung phù hợp. Nhóm sử dụng phân cụm phân cấp Ward để khởi tạo tâm cho K-Means. Bài trình bày đi từ dữ liệu, cách chọn đặc trưng, cơ chế kết hợp đến kết quả và đề xuất. Có một giới hạn em xin nói ngay: dữ liệu trên Kaggle được tác giả công bố là tổng hợp phục vụ học tập. Các kết luận kinh doanh vì vậy được trình bày dưới dạng giả thuyết."
+  ],
+  [
+    "Bốn câu hỏi dẫn dắt dự án",
+    [
+      "Dữ liệu đo được những hành vi nào?",
+      "Ward kết hợp K-Means như thế nào?",
+      "Các cụm có gọn, tách biệt và ổn định?",
+      "Có thể thử chiến lược nào cho từng nhóm?"
+    ],
+    null,
+    "Nhóm chia đề thành bốn câu hỏi. Thứ nhất là dữ liệu thực sự đo được gì, vì tên biến có thể khiến mình suy diễn quá mức. Thứ hai là hai thuật toán phải kết hợp trong mã như thế nào, chứ không chỉ chạy riêng rồi đặt cạnh nhau. Thứ ba là cách đánh giá khi không có nhãn phân khúc chuẩn. Câu hỏi cuối cùng là chuyển kết quả thành đề xuất sản phẩm. Với mỗi câu hỏi, nhóm đều có tệp kiểm chứng tương ứng trong thư mục outputs. Các số trên slide được lấy từ kết quả chạy, không nhập số minh họa vào phần thực nghiệm."
+  ],
+  [
+    "40,034 người chơi, 13 cột từ Kaggle",
+    [
+      "Tác giả: Rabie El Kharoua | phiên bản 1 | CC BY 4.0",
+      "Nguồn tự xác nhận: dữ liệu tổng hợp cho giáo dục",
+      "Một hàng là một PlayerID; chưa có nhật ký giao dịch"
+    ],
+    null,
+    "Bộ dữ liệu có 40,034 dòng và 13 cột. Mỗi hàng là một mã người chơi, kèm tần suất chơi, thời lượng, cấp độ, thành tích và một số thông tin ngữ cảnh. Nhóm tải trực tiếp CSV từ Kaggle và lưu cả metadata để kiểm tra tác giả, phiên bản, giấy phép. Data card ghi rõ đây là dữ liệu tổng hợp. Vì thế, nhóm có thể đánh giá quy trình thuật toán trên đúng bộ được giao, nhưng chưa thể xem các cụm là phân khúc thật của một trò chơi cụ thể. Bộ dữ liệu cũng không có thời điểm bắt đầu và kết thúc theo dõi từng người."
+  ],
+  [
+    "Ba chỉ số đề bài chưa có dữ liệu để tính",
+    [
+      "Không có Wins/Losses → chưa có tỷ lệ thắng/thua",
+      "Thành tích tích lũy ≠ tốc độ thu vật phẩm",
+      "Cấp độ ≠ điểm kỹ năng; có mua ≠ chi tiêu cao",
+      "Hai cột thời lượng chưa thống nhất đơn vị"
+    ],
+    null,
+    "Đề bài gợi ý tỷ lệ thắng thua, tốc độ thu vật phẩm và điểm kỹ năng. Tuy nhiên, nguồn không có số trận thắng hoặc thua, không có vật phẩm thu được theo thời gian, cũng không có MMR hay Elo. Nhóm không tự tạo các cột này. PlayerLevel được dùng như chỉ báo tiến trình, còn AchievementsUnlocked là số thành tích tích lũy. InGamePurchases chỉ cho biết có mua hay không, nên không đặt tên High-Spenders. Hai cột thời lượng cũng không khớp khi đổi phút sang giờ. Nhóm giữ cột gốc cho thực nghiệm và có kiểm tra khi loại PlayTimeHours để minh bạch ảnh hưởng."
+  ],
+  [
+    "Năm biến mô tả tần suất, thời lượng, tiến trình",
+    [
+      "PlayTimeHours; SessionsPerWeek",
+      "AvgSessionDurationMinutes",
+      "PlayerLevel; AchievementsUnlocked",
+      "Loại ID; giữ EngagementLevel và mua hàng để đối chiếu sau"
+    ],
+    "01_distributions.png",
+    "Năm đầu vào gồm thời lượng thô PlayTimeHours, số phiên mỗi tuần, số phút trung bình mỗi phiên, cấp độ và số thành tích. Biểu đồ cho thấy phân phối từng biến trước chuẩn hóa. Nhóm chọn chúng vì liên quan trực tiếp đến phong cách chơi và đều là số. PlayerID bị loại vì số mã lớn hơn không có nghĩa là hành vi mạnh hơn. EngagementLevel được giữ lại để đối chiếu sau học, tránh làm mô hình lặp lại nhãn có sẵn. Thông tin mua hàng cũng không đưa vào khoảng cách, nhờ vậy tỷ lệ mua sau phân cụm không bị quyết định sẵn bởi đầu vào."
+  ],
+  [
+    "Chuẩn hóa chỉ học từ tập train",
+    [
+      "Train: 32,027 | Holdout: 8,007 | seed 42",
+      "Ép kiểu → kiểm tra → imputer trung vị → StandardScaler",
+      "Fit imputer/scaler trên train; holdout chỉ transform",
+      "Không xóa ngoại lệ chỉ vì người chơi hoạt động nhiều"
+    ],
+    null,
+    "Nhóm chia ngẫu nhiên dữ liệu theo tỷ lệ 80–20. Có 32,027 người trong train và 8,007 người trong holdout. Bộ điền thiếu và chuẩn hóa chỉ học từ train. Khi đánh giá hoặc gán người chơi mới, nhóm dùng lại các tham số đó. Chuẩn hóa giúp số phút, số phiên và cấp độ đóng góp trên thang đo tương đương trong khoảng cách Euclidean. Bước kiểm tra hiện không phát hiện ô thiếu hoặc ID lặp trong bản nguồn. Nhóm vẫn lưu imputer trong Pipeline để đầu vào mới được xử lý thống nhất. Việc chuẩn hóa và chọn k không sử dụng nhãn EngagementLevel."
+  ],
+  [
+    "Tương quan giúp kiểm tra, không tạo nhãn học",
+    [
+      "Kiểm tra phương sai và tương quan",
+      "Không chọn biến bằng EngagementLevel",
+      "Không thêm chỉ số dẫn xuất đếm lặp số phiên × số phút",
+      "PlayTimeHours cần xác minh ý nghĩa trước triển khai"
+    ],
+    "02_correlations.png",
+    "Hình này biểu diễn tương quan tuyến tính giữa các đầu vào. Nó giúp kiểm tra cột quá giống nhau và là một phần của khám phá dữ liệu, chứ không phải nhãn đúng sai cho cụm. Nhóm không dùng Random Forest hay Mutual Information với EngagementLevel để chọn đầu vào vì đó sẽ đưa thông tin có giám sát vào thiết kế phân cụm. Việc chọn năm biến dựa trên mục tiêu và khả năng đo được của nguồn. Các thống kê kiểm tra được lưu trong feature_audit và feature_correlations. Đến đây em xin chuyển phần thuật toán và đánh giá cho bạn thứ hai trong nhóm."
+  ],
+  [
+    "K-Means là mốc so sánh dễ tái lập",
+    [
+      "Gán điểm cho tâm gần nhất → tính lại trung bình",
+      "Mục tiêu: giảm tổng bình phương khoảng cách trong cụm",
+      "k-means++ | 20 khởi tạo | tối đa 300 vòng",
+      "Nhanh; cần chọn k và nhạy với hình dạng cụm"
+    ],
+    null,
+    "Em xin tiếp tục phần mô hình. K-Means bắt đầu bằng k tâm, rồi lặp hai bước: gán người chơi cho tâm gần nhất và tính lại tâm bằng trung bình những người trong nhóm. Mục tiêu là giảm tổng bình phương khoảng cách đến tâm. Nhóm dùng k-means++ và chạy 20 lần khởi tạo cho mỗi k để giảm phụ thuộc một lần chọn tâm. Đây là mốc so sánh vì đơn giản, dễ lưu và có thể predict cho người chơi mới. Tuy nhiên, K-Means luôn tạo nhóm ngay cả khi dữ liệu gần liên tục. Nó cũng thích các nhóm gọn nên chỉ số tốt cần được đọc cùng hồ sơ và độ ổn định."
+  ],
+  [
+    "Ward gộp cụm theo mức tăng sai số nhỏ nhất",
+    [
+      "Xây cây trên 4,000 người lấy từ train",
+      "Mỗi bước gộp làm tăng phương sai nội cụm ít nhất",
+      "Cắt cây ở k = 2…8; lưu cây và ID mẫu",
+      "Ward ngoài mẫu: gán qua tâm, cần ghi rõ"
+    ],
+    "03_dendrogram.png",
+    "Ward là phân cụm phân cấp kết tụ. Ban đầu mỗi người là một cụm; thuật toán lần lượt gộp hai cụm khiến tổng sai số tăng ít nhất. Cây trên slide được rút gọn còn 24 nhánh cuối, các số trong ngoặc là số quan sát của nhánh. Nhóm xây cây trên 4,000 người lấy từ train để kiểm soát bộ nhớ. Ward thuần không có predict tự nhiên. Vì vậy khi đánh giá trên holdout, nhóm dùng tâm của các cụm Ward để gán điểm gần nhất và ghi rõ đây là mở rộng bằng tâm, không gọi là chạy Ward trực tiếp trên toàn bộ người chơi."
+  ],
+  [
+    "Tâm Ward được K-Means tinh chỉnh trên toàn train",
+    [
+      "Ward trên mẫu train → cắt cây ở k",
+      "Lấy trung bình mỗi cụm → tâm khởi tạo",
+      "K-Means fit toàn train với n_init = 1",
+      "Lưu Pipeline + mô hình; người mới chỉ transform/predict"
+    ],
+    null,
+    "Cơ chế kết hợp thực sự nằm ở tâm khởi tạo. Nhóm cắt cây Ward thành k cụm, lấy trung bình của từng cụm và đưa các tâm đó vào tham số init của K-Means. Sau khi chọn k bằng mẫu train, K-Means được chạy trên toàn train để tinh chỉnh lại tâm với nhiều dữ liệu hơn. n_init bằng một vì tâm đã được xác định từ Ward. Cách làm này tận dụng cấu trúc phân cấp và giữ được khả năng gán người mới của K-Means. Nó không bảo đảm tốt hơn khởi tạo k-means++, nên nhóm vẫn chạy mốc so sánh và trình bày đầy đủ kết quả."
+  ],
+  [
+    "Hai chỉ số nội bộ đo độ gọn và tách biệt",
+    [
+      "Silhouette ↑: s = (b − a) / max(a, b)",
+      "a: khoảng cách nội cụm; b: đến cụm lân cận",
+      "Davies–Bouldin ↓: phân tán / khoảng cách hai tâm",
+      "Không dùng Accuracy; không có nhãn phân khúc chuẩn"
+    ],
+    null,
+    "Silhouette so sánh mức gần nhóm mình với mức gần nhóm lân cận. Nếu khoảng cách trung bình trong nhóm là hai và đến nhóm gần nhất là năm thì điểm bằng ba chia năm, tức 0,6. Gần một là tách rõ; gần không là chồng lấn; âm là gần nhóm khác hơn. Davies–Bouldin lấy độ phân tán của các nhóm so với khoảng cách giữa tâm, nên càng thấp càng tốt. Hai chỉ số đo cấu trúc hình học, chưa đo doanh thu. Nhóm không tính Accuracy vì không có nhãn phân khúc thật. Silhouette dùng mẫu cố định 2.000 người để kiểm soát chi phí, còn DBI dùng toàn bộ tập đang đánh giá."
+  ],
+  [
+    "Quét k = 2…8; mô hình kết hợp chọn k = 8",
+    [
+      "Ba phương pháp dùng cùng mẫu train và đặc trưng",
+      "Xếp hạng Silhouette giảm + DBI tăng trong từng phương pháp",
+      "k được chọn: {'KMeans': 8, 'Ward': 6, 'Ward_KMeans': 8}",
+      "Khóa k trước khi đánh giá holdout"
+    ],
+    "04_model_selection.png",
+    "Nhóm thử các k từ hai đến tám trên cùng mẫu train để so sánh công bằng. Với từng phương pháp, nhóm cộng thứ hạng Silhouette theo chiều giảm và DBI theo chiều tăng; tổng hạng nhỏ nhất được chọn. Khi hòa, ưu tiên Silhouette cao hơn rồi k nhỏ hơn. Cách này tránh chọn một chỉ số tùy ý sau khi nhìn kết quả. Mô hình Ward kết hợp K-Means chọn k bằng 8. Nhóm không ép thành ba cụm chỉ vì đề có ba tên ví dụ. Sau bước này, k được khóa và holdout mới được dùng để đánh giá khả năng gán trên những người chưa tham gia học tâm."
+  ],
+  [
+    "Holdout: Silhouette 0.154, DBI 1.432",
+    [
+      "KMeans: k=8 | Sil=0.150 | DBI=1.446",
+      "Ward: k=6 | Sil=0.143 | DBI=1.627",
+      "Ward_KMeans: k=8 | Sil=0.154 | DBI=1.432",
+      "Ward dùng mở rộng bằng tâm; hai K-Means fit toàn train",
+      "Điểm nội bộ chưa xác nhận giá trị kinh doanh"
+    ],
+    null,
+    "Trên holdout, mô hình kết hợp đạt Silhouette 0.1540 và Davies–Bouldin 1.4322. Các hàng còn lại là kết quả của hai mốc so sánh sau khi chọn k riêng từ train. Cần lưu ý Ward ở đây là gán qua tâm của mẫu, còn hai phương pháp K-Means đã tinh chỉnh trên toàn train. Nhóm không chọn lại phương pháp dựa trên holdout. Mô hình kết hợp là sản phẩm chính theo yêu cầu đề; nếu K-Means thuần có chỉ số tốt hơn ở bảng thì nhóm vẫn giữ và giải thích trung thực. Điểm Silhouette gần không cho thấy ranh giới còn chồng lấn, nên cần thận trọng khi biến nhãn nhóm thành quy tắc kinh doanh."
+  ],
+  [
+    "Các cụm còn chồng lấn, nhạy với mẫu",
+    [
+      "5 mẫu Ward khác: ARI trung bình 0.313",
+      "ARI thấp nhất: 0.261",
+      "Bỏ PlayTimeHours: ARI với mô hình chính 0.246",
+      "k = 8 ở biên dải thử; chưa xác nhận 8 nhóm tự nhiên"
+    ],
+    null,
+    "Nhóm còn thay đổi mẫu Ward qua năm seed và so cách gán trên cùng holdout. ARI trung bình so với mô hình gốc là 0.3132; giá trị thấp nhất là 0.2612. ARI bằng một nghĩa là hai cách chia trùng nhau sau khi bỏ qua số hiệu nhãn. Đây là phép đo ổn định, không phải độ chính xác so với sự thật. Khi bỏ PlayTimeHours, ARI với mô hình chính là 0.2458. Phép thử này cho thấy mức phụ thuộc vào cột có vấn đề ngữ nghĩa. Nhóm không so trực tiếp Silhouette của bốn chiều và năm chiều để tuyên bố phương án thắng."
+  ],
+  [
+    "Tên nhóm bám vào hồ sơ quan sát được",
+    [
+      "8 cụm; mỗi cụm chiếm 11.9–13.4%",
+      "Tên tương đối: tần suất chơi × thời lượng phiên",
+      "Tỷ lệ có mua: 18.9%–20.9%",
+      "Cấp độ là tiến trình; % có mua không đo mức chi tiêu"
+    ],
+    "06_profiles.png",
+    "Nhóm đặt tên dựa trên trung bình số phiên và thời lượng giữa các cụm: thường xuyên hay ít phiên, phiên dài hay ngắn theo nghĩa tương đối. Heatmap thể hiện trung bình đã đổi về đơn vị độ lệch chuẩn: ô màu nóng cao hơn trung bình chung, ô màu lạnh thấp hơn. Các tên không phải nhãn được đưa trước vào mô hình. Nhóm cũng không tự thêm High-Spenders vì nguồn chỉ có cờ có mua. Hồ sơ được mô tả trên toàn bộ dữ liệu sau khi mô hình đã fit train, nên bảng hồ sơ là mô tả tổng thể, không phải một phép đánh giá holdout khác."
+  ],
+  [
+    "PCA 2D chỉ giữ 40.3% phương sai",
+    [
+      "Hình chiếu hỗ trợ quan sát, không dùng để học cụm",
+      "Màu là cụm được học trong không gian năm chiều",
+      "Không suy ra mức tách biệt chỉ từ hình 2D",
+      "Đọc cùng Silhouette và độ ổn định ARI"
+    ],
+    "05_pca.png",
+    "Biểu đồ này giúp nhìn một phần cách các nhóm phân bố. Nhóm dùng PCA để chiếu năm đầu vào xuống hai chiều, giữ khoảng 40.3% phương sai. Mô hình phân cụm được học trong không gian năm chiều đã chuẩn hóa; PCA chỉ được dùng sau đó để minh họa. Vì còn phần lớn thông tin ở các chiều chưa vẽ, điểm chồng lấn trên hình không đủ để kết luận mọi cụm đều sai, và các vùng màu cũng không chứng minh có các kiểu người chơi tự nhiên. Nhóm đọc hình cùng điểm Silhouette còn thấp và ARI nhạy với mẫu, từ đó giữ cách diễn giải thận trọng cho ứng dụng."
+  ],
+  [
+    "Đề xuất ưu đãi phải được kiểm chứng bằng A/B test",
+    [
+      "Phiên ngắn: gói trang trí nhỏ, nội dung dễ trải nghiệm",
+      "Phiên dài: nội dung mở rộng và chủ đề tự chọn",
+      "Ít phiên: điểm chạm khi quay lại; giới hạn nhắc mua",
+      "Đo conversion, doanh thu/người, retention và hoàn tiền"
+    ],
+    "07_sizes_purchases.png",
+    "Từ hồ sơ, nhóm đề xuất nội dung dễ trải nghiệm và gói trang trí nhỏ cho nhóm có phiên ngắn. Với phiên dài, có thể thử nội dung mở rộng hoặc trang trí theo chủ đề. Nhóm ít phiên cần điểm chạm khi quay lại game, còn tần suất nhắc mua cần giới hạn. Đây đều là giả thuyết. Muốn kiểm chứng, cần chia ngẫu nhiên control và treatment trong từng cụm, khóa nhãn trước khi thử và đo trên tất cả người đủ điều kiện được phân nhánh. Chỉ số gồm conversion hoặc doanh thu bình quân, đi kèm retention và hoàn tiền. Không có dữ liệu số tiền nên nhóm chưa thể tính ROI hay dự báo tăng doanh thu."
+  ],
+  [
+    "Pipeline tái lập được; kết luận cần đúng phạm vi",
+    [
+      "Đủ mã nguồn, dữ liệu nguồn, bảng, hình và mô hình",
+      "Ward → tâm → K-Means; hai chỉ số và kiểm tra độ nhạy",
+      "Bổ sung wins/losses, vật phẩm theo thời gian, MMR, giao dịch",
+      "Cảm ơn thầy và các bạn • Hỏi đáp"
+    ],
+    null,
+    "Nhóm đã hoàn thành quy trình từ dữ liệu đến phân cụm, đánh giá và diễn giải. Sản phẩm nộp có mã chạy lại, CSV nguồn, bảng kết quả, hình và mô hình đã lưu. Điểm cần nhớ là việc kết hợp Ward với K-Means được thực hiện bằng tâm khởi tạo, còn đánh giá có holdout và kiểm tra độ nhạy. Giới hạn nằm ở dữ liệu tổng hợp và các chỉ số còn thiếu. Để áp dụng thật, cần xác minh đơn vị, thu thập thắng thua, vật phẩm theo thời gian, điểm kỹ năng và giao dịch, rồi thử chiến lược có đối chứng. Phần trình bày của nhóm em kết thúc. Em cảm ơn thầy và các bạn đã lắng nghe."
+  ]
+]

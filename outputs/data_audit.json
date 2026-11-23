@@ -1,0 +1,24 @@
+{
+  "rows": 40034,
+  "columns": 13,
+  "duplicate_rows": 0,
+  "duplicate_player_ids": 0,
+  "raw_missing_cells": 0,
+  "feature_missing_after_coercion": {
+    "PlayTimeHours": 0,
+    "SessionsPerWeek": 0,
+    "AvgSessionDurationMinutes": 0,
+    "PlayerLevel": 0,
+    "AchievementsUnlocked": 0
+  },
+  "synthetic_source": true,
+  "time_units_warning": "PlayTimeHours mô tả giờ/phiên nhưng không khớp AvgSessionDurationMinutes/60; không diễn giải là giờ/tuần.",
+  "unsupported_metrics": [
+    "win_loss_ratio",
+    "item_collection_rate",
+    "true_skill_score",
+    "spend_amount"
+  ],
+  "session_time_disagreement_rate": 0.9925313483538992,
+  "session_time_pearson": -0.0019250447896054824
+}
