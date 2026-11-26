@@ -439,6 +439,8 @@ Chỉ số nội bộ chưa chứng minh hiệu quả thương mại; chiến l�
 '''
     if (ROOT / 'notebooks').is_dir():
         text += '\n## Jupyter Notebook\n\nXem [notebook tổng hợp](notebooks/00_Gamer_Behavior_Clustering.ipynb) và [hướng dẫn tám notebook theo bước](notebooks/README.md). Cài requirements-notebook.txt trước khi chọn kernel và Run All.\n'
+    if (ROOT / 'deliverables/english/Gamer_Behavior_Clustering_English.pptx').is_file():
+        text += '\n## English presentation\n\n[18-slide English presentation](deliverables/english/Gamer_Behavior_Clustering_English.pptx), with English charts and speaker notes. Rebuild with `python build_english_presentation.py` using the verified outputs.\n'
     (ROOT/'README.md').write_text(text,encoding='utf-8')
 
 

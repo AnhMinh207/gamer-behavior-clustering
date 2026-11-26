@@ -1,0 +1,199 @@
+[
+  [
+    "Gamer Behavior Clustering",
+    [
+      "Player Profiling with Ward + K-Means",
+      "Data Mining Project | 13–15 minute presentation",
+      "[Presenter 1 / Student ID]  •  [Presenter 2 / Student ID]"
+    ],
+    null,
+    "Our project explores whether players with similar behavior can be grouped into useful profiles. We combine Ward hierarchical clustering with K-Means, evaluate the resulting groups, and propose product experiments. The dataset comes from Kaggle and is explicitly synthetic for educational use. We therefore distinguish what the algorithm demonstrates from what a real game business would still need to validate. We will cover the data, preprocessing, clustering methods, evaluation, profiles, and monetization hypotheses."
+  ],
+  [
+    "Four questions guide the project",
+    [
+      "What player behavior can the dataset actually measure?",
+      "How does Ward initialize K-Means?",
+      "Are the clusters compact, separated, and stable?",
+      "Which targeted product experiments could follow?"
+    ],
+    null,
+    "We organize the project around four questions. First, which behaviors can we measure without inventing unavailable features? Second, how are the two clustering algorithms connected in the actual implementation? Third, how do we evaluate an unsupervised solution without ground-truth segment labels? Finally, how can profiles support testable product ideas? Every numerical claim comes from executed code. The repository includes the Python pipeline and nine executed Jupyter notebooks with explanations, tables, and charts."
+  ],
+  [
+    "40,034 players • 13 source columns",
+    [
+      "Kaggle author: Rabie El Kharoua | version 1",
+      "License: Creative Commons Attribution 4.0",
+      "Publisher-declared synthetic educational data",
+      "One row per PlayerID; no transaction history"
+    ],
+    null,
+    "The source contains 40,034 rows and 13 columns. Each row represents a synthetic player and includes demographics, context, activity, level, achievements, and an engagement category. We downloaded the original CSV and preserved its metadata and data card. The publisher explicitly states that the dataset was generated for education. This supports an algorithmic case study, but it does not establish real-world player segments or a business impact. The dataset also lacks a documented observation window for each player."
+  ],
+  [
+    "Missing fields limit the requested metrics",
+    [
+      "Win/loss ratio: no wins or losses are recorded",
+      "Item collection rate: no timed item counts",
+      "True skill score: no Elo or MMR",
+      "High spenders: purchase flag is binary, not an amount"
+    ],
+    null,
+    "The assignment suggests play time, win/loss ratio, item collection rate, and skill score. Only some of these can be measured from this source. PlayerLevel is a progression indicator, not a validated skill score. AchievementsUnlocked is an accumulated count, not an item collection rate. InGamePurchases indicates whether a player purchases, not how much they spend. We do not fabricate the missing metrics or label any cluster as high spenders. We also flag inconsistent descriptions of the two session-duration columns."
+  ],
+  [
+    "Five numeric features describe play style",
+    [
+      "PlayTimeHours: raw duration indicator; verify its units",
+      "SessionsPerWeek and AvgSessionDurationMinutes",
+      "PlayerLevel and AchievementsUnlocked",
+      "Exclude ID; reserve engagement and purchases for post-hoc analysis"
+    ],
+    "distributions.png",
+    "The model uses five numeric features to represent activity, duration, and progression. We exclude PlayerID because its numerical value has no behavioral meaning. We also exclude EngagementLevel and the purchase flag from clustering and model selection. This prevents the analysis from simply reproducing an existing category or splitting users directly by purchase status. The histograms show the raw feature distributions. A near-uniform distribution does not itself demonstrate the existence of natural segments."
+  ],
+  [
+    "Fit preprocessing on training data only",
+    [
+      "Training: 32,027 players | Holdout: 8,007 | seed 42",
+      "Numeric checks → median imputer → StandardScaler",
+      "Fit on training data; transform the holdout",
+      "Do not remove active players merely as outliers"
+    ],
+    null,
+    "We split the data into 80 percent training and 20 percent holdout using seed 42. Numeric coercion and domain checks happen before learned preprocessing. Median imputation and StandardScaler are fitted only on training observations. The holdout uses the fitted transforms. Standardization makes Euclidean distances less dependent on the original units of minutes, levels, and counts. The supplied dataset has no missing values or duplicate player IDs after inspection, but the saved imputer provides a consistent rule for future inputs."
+  ],
+  [
+    "Correlation checks do not supply labels",
+    [
+      "Inspect variance and Pearson correlation",
+      "Do not select features using EngagementLevel",
+      "Avoid double-counting sessions × session duration",
+      "PlayTimeHours needs source validation and sensitivity analysis"
+    ],
+    "correlations.png",
+    "The correlation chart is descriptive exploratory analysis. We use it to inspect linear relationships and potential redundancy, not to define the correct clusters. Feature inclusion is based on the assignment and the meaning of the source fields. We do not rank features using the engagement label because that would introduce supervision into the design. The two duration columns do not agree when minutes are converted to hours, so we avoid assuming that PlayTimeHours measures weekly hours. We later examine the effect of removing it. I will now hand over to our second presenter."
+  ],
+  [
+    "K-Means provides a reproducible baseline",
+    [
+      "Assign each point to the nearest center",
+      "Update centers using cluster means; repeat",
+      "k-means++ | 20 initializations | up to 300 iterations",
+      "Efficient, but sensitive to k and cluster geometry"
+    ],
+    null,
+    "K-Means alternates between assigning each observation to its nearest center and updating centers as cluster means. It minimizes the sum of squared distances within clusters. We use k-means++ initialization, 20 starts, and up to 300 iterations for each candidate k. This is a simple baseline with a natural predict method for new players. However, it favors compact Euclidean clusters and will partition continuous data even if no natural player types exist. Evaluation and stability checks are therefore necessary."
+  ],
+  [
+    "Ward merges clusters with the least SSE increase",
+    [
+      "Build the hierarchy on 4,000 training players",
+      "Merge the pair with the smallest increase in within-cluster SSE",
+      "Cut the tree at candidate k values from 2 to 8",
+      "Out-of-sample Ward uses nearest-centroid extension"
+    ],
+    "dendrogram.png",
+    "Agglomerative Ward clustering starts with one cluster per observation and repeatedly merges the pair that increases within-cluster squared error the least. We fit a true Ward hierarchy on a 4,000-player training sample to control memory use. The displayed tree shows its last 24 branches; branch counts are not individual players. Ward has no natural predict method. Its holdout comparison therefore uses the nearest centroid of each sample-based cluster, and we explicitly report that extension rather than calling it exact Ward clustering on the entire holdout."
+  ],
+  [
+    "Ward centers initialize full-training K-Means",
+    [
+      "Ward sample → cut the tree at k",
+      "Average each Ward cluster → initial centers",
+      "Fit K-Means on all training players with n_init = 1",
+      "Save the preprocessing pipeline and final model"
+    ],
+    null,
+    "The hybrid connects the methods through the initial centers. We cut the Ward hierarchy at k, calculate each cluster mean, and pass those means to K-Means through its init argument. During model selection, both stages use the same training sample. After k is locked, K-Means refines the Ward-derived centers on all training players. We use one initialization because the centers are already specified. This offers structured initialization and scalable prediction, but it does not guarantee better results than k-means++."
+  ],
+  [
+    "Two internal metrics assess cluster geometry",
+    [
+      "Silhouette ↑: s = (b − a) / max(a, b)",
+      "a: own-cluster distance; b: nearest-other-cluster distance",
+      "Davies–Bouldin ↓: within-cluster scatter / center separation",
+      "No ground-truth segments: do not report classification accuracy"
+    ],
+    null,
+    "Silhouette compares average distance within a point’s cluster with its average distance to the nearest other cluster. For example, a equals two and b equals five gives a silhouette of 0.6. Values near zero indicate overlap; negative values suggest a closer alternative cluster. Davies–Bouldin compares cluster scatter with separation between centers, so lower values are preferred. We use the same 2,000-player silhouette sample within each evaluation stage and compute DBI on the full set at that stage. These metrics do not measure revenue or prove that the segments are meaningful outside the dataset."
+  ],
+  [
+    "The hybrid selects k = 8 within the tested range",
+    [
+      "Compare all three methods on the same training sample",
+      "Minimize rank(Silhouette descending) + rank(DBI ascending)",
+      "Selected k: K-Means 8 | Ward 6 | Ward + K-Means 8",
+      "k = 8 is the upper boundary tested, not a global optimum"
+    ],
+    "model_selection.png",
+    "We test k from two to eight for each method under the same training-sample conditions. The selection rule minimizes the sum of the descending silhouette rank and ascending DBI rank. Ties favor a higher silhouette and then a smaller k. The hybrid selects eight clusters within this range. We do not force three groups just to match the illustrative labels in the assignment. Because eight is the upper search boundary, this result is not a globally optimal cluster count. We lock k before evaluating the holdout."
+  ],
+  [
+    "Holdout: Silhouette 0.1540 • DBI 1.4322",
+    [
+      "K-Means: k = 8 | Silhouette 0.1501 | DBI 1.4461",
+      "Ward extension: k = 6 | Silhouette 0.1435 | DBI 1.6267",
+      "Ward + K-Means: k = 8 | Silhouette 0.1540 | DBI 1.4322",
+      "Small metric differences do not establish a robust advantage"
+    ],
+    null,
+    "On the holdout, the hybrid scores 0.1540 for silhouette and 1.4322 for Davies–Bouldin. The baseline scores 0.1501 and 1.4461, while Ward’s centroid extension scores 0.1435 and 1.6267. The hybrid is slightly better on both metrics in this run. We have not established uncertainty around these differences, so we do not claim a robust advantage. Both K-Means variants were fitted on all training players, whereas the Ward baseline uses centroids from its training sample. The hybrid was the assignment’s primary method before inspecting these results."
+  ],
+  [
+    "Clusters overlap and depend on initialization",
+    [
+      "Five alternative Ward samples: mean ARI = 0.3132",
+      "Lowest ARI versus seed 42 = 0.2612",
+      "Remove PlayTimeHours: ARI versus main model = 0.2458",
+      "Do not interpret eight clusters as eight proven natural types"
+    ],
+    null,
+    "We repeat Ward sampling using five alternative seeds, keep the split and k fixed, and compare holdout assignments with the reference run. The mean adjusted Rand index is 0.3132 and the minimum is 0.2612, showing substantial sensitivity to initialization. Removing PlayTimeHours gives an ARI of 0.2458 against the main model. ARI here compares partitions, not predictions against true segment labels. Metrics from the four-feature sensitivity model should not be ranked directly against the five-feature model because their distance spaces differ. Together with the low silhouette, these results limit operational interpretation."
+  ],
+  [
+    "Profiles describe observed relative behavior",
+    [
+      "Eight clusters; each contains 11.9–13.4% of players",
+      "Describe frequency, session length, level, and achievements",
+      "Purchase incidence ranges from 18.9% to 20.9%",
+      "Purchase incidence does not measure spending intensity"
+    ],
+    "profiles.png",
+    "We apply the training-fitted model to all rows to create descriptive profiles. Cluster IDs are identifiers, not ranks. The heatmap reports cluster means relative to the overall feature means in standard-deviation units. Warm colors indicate above-average values and cool colors indicate below-average values. Cluster sizes are fairly similar. We describe frequency and session length relatively rather than asserting validated casual or hardcore types. Purchase incidence varies only within the displayed range and cannot identify high spenders because the source does not contain amounts."
+  ],
+  [
+    "The 2D PCA view retains only 40.3% of variance",
+    [
+      "PCA is a post-hoc visual aid, not a clustering input",
+      "Colors show assignments learned in five dimensions",
+      "A 2D projection cannot establish cluster validity",
+      "Interpret it alongside holdout metrics and stability"
+    ],
+    "pca.png",
+    "PCA projects the five standardized inputs into two dimensions for visualization. The projection retains about 40.3 percent of the variance. Clustering was performed in the original five-dimensional standardized space, not on this plot. Overlap in the projection does not by itself prove that every assignment is wrong, while visible color patterns do not validate natural player types. We interpret the view alongside the low silhouette and the sensitivity checks rather than treating it as independent evidence of successful segmentation."
+  ],
+  [
+    "Targeted offers remain A/B-test hypotheses",
+    [
+      "Short sessions: small cosmetic bundles and easy trials",
+      "Long sessions: optional themed content and expansions",
+      "Infrequent sessions: return-time touchpoints; cap prompts",
+      "Measure conversion, revenue per eligible player, retention, and refunds"
+    ],
+    "sizes_purchases.png",
+    "The profile-based ideas are hypotheses, not proven monetization strategies. Short-session groups could be offered small cosmetic bundles, while longer-session groups could be shown optional themed content. For less frequent players, a return-time touchpoint may be worth testing. Randomize control and treatment within each eligible cluster and freeze assignments before the experiment. Measure all randomized eligible players, including non-buyers. Track conversion or revenue per player along with retention, refunds, and complaints. Without transaction amounts and an actual intervention, we cannot estimate uplift, ROI, or revenue gains."
+  ],
+  [
+    "A reproducible pipeline with clearly bounded claims",
+    [
+      "Python pipeline + nine executed Jupyter notebooks",
+      "Ward → centers → K-Means; holdout and sensitivity checks",
+      "Next: validate units, collect real logs, timed metrics, and transactions",
+      "Source: Rabie El Kharoua, Kaggle (CC BY 4.0) | Questions?"
+    ],
+    null,
+    "The deliverables include the original source data, a reproducible Python pipeline, nine executed notebooks, result tables, figures, and the saved model. The hybrid uses Ward-derived centers to initialize K-Means and includes holdout evaluation and sensitivity analysis. The main limitations are synthetic data, inconsistent duration semantics, missing behavioral and spending metrics, and unstable partitions. A real deployment would require source validation, appropriate observation windows, real logs, and controlled experiments. The repository is github.com/AnhMinh207/gamer-behavior-clustering. Thank you for listening; we welcome your questions."
+  ]
+]

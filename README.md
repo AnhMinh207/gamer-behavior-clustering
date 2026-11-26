@@ -8,6 +8,12 @@ Mở **[notebook tổng hợp 00](notebooks/00_Gamer_Behavior_Clustering.ipynb)*
 
 Cài `pip install -r requirements-notebook.txt`, chọn đúng kernel `.venv` trong VS Code rồi **Restart Kernel → Run All**. Các file đã lưu output từ lần chạy thật. Xem [hướng dẫn mở và kiểm tra notebook](notebooks/README.md).
 
+## English presentation
+
+The [18-slide English presentation](deliverables/english/Gamer_Behavior_Clustering_English.pptx) includes English chart labels and speaker notes for two presenters. Its source text and seven charts are in [deliverables/english/](deliverables/english/).
+
+Rebuild it with `python build_english_presentation.py`. The deck uses the verified results in `outputs/`; it does not retrain the models or modify the Vietnamese report.
+
 ## Chạy lại
 
 Yêu cầu Python 3.13 trên máy có thể cài các phiên bản trong requirements.txt. Windows PowerShell:
