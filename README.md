@@ -2,6 +2,12 @@
 
 Dự án môn Khai phá dữ liệu, viết bằng tiếng Việt. Đọc báo cáo Word trong deliverables/.
 
+## Xem bài theo từng bước bằng Jupyter Notebook
+
+Mở **[notebook tổng hợp 00](notebooks/00_Gamer_Behavior_Clustering.ipynb)** để xem code, giải thích, bảng và biểu đồ ngay bên dưới từng ô. Có thêm **[tám notebook theo công đoạn](notebooks/README.md)**, từ tìm hiểu dữ liệu đến dự đoán và chiến lược.
+
+Cài `pip install -r requirements-notebook.txt`, chọn đúng kernel `.venv` trong VS Code rồi **Restart Kernel → Run All**. Các file đã lưu output từ lần chạy thật. Xem [hướng dẫn mở và kiểm tra notebook](notebooks/README.md).
+
 ## Chạy lại
 
 Yêu cầu Python 3.13 trên máy có thể cài các phiên bản trong requirements.txt. Windows PowerShell:

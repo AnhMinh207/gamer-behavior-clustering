@@ -1,0 +1,109 @@
+{
+  "passed": true,
+  "interpreter_version": "3.13.0",
+  "all_requested_notebooks_executed": true,
+  "mode": "all_nine",
+  "fresh_kernel_per_notebook": true,
+  "separate_full_and_modular_workspace": true,
+  "original_report_outputs_unchanged": true,
+  "numerical_agreement": [
+    {
+      "Kiểm tra": "model_selection.csv",
+      "Kết quả": "Khớp kết quả báo cáo"
+    },
+    {
+      "Kiểm tra": "holdout_metrics.csv",
+      "Kết quả": "Khớp kết quả báo cáo"
+    },
+    {
+      "Kiểm tra": "stability.csv",
+      "Kết quả": "Khớp kết quả báo cáo"
+    },
+    {
+      "Kiểm tra": "cluster_profiles.csv",
+      "Kết quả": "Khớp kết quả báo cáo"
+    },
+    {
+      "Kiểm tra": "Gán nhóm toàn bộ 40.034 người và ví dụ mới",
+      "Kết quả": "Khớp mô hình đã nộp"
+    },
+    {
+      "Kiểm tra": "Bỏ PlayTimeHours",
+      "Kết quả": "Khớp phân tích độ nhạy"
+    }
+  ],
+  "notebooks": [
+    {
+      "file": "00_Gamer_Behavior_Clustering.ipynb",
+      "code_cells": 25,
+      "images": 10,
+      "html_outputs": 24,
+      "seconds": 52.5,
+      "sha256": "cc19e1ae01d3f99df35a69a1a03198b1df107bcb1e4e6be5d6c1787befd3250c"
+    },
+    {
+      "file": "01_data_understanding.ipynb",
+      "code_cells": 3,
+      "images": 0,
+      "html_outputs": 4,
+      "seconds": 4.11,
+      "sha256": "590efe9fbc9bc3225f14b79ff07a1b1a598733069494539aca8c6c34b5840b82"
+    },
+    {
+      "file": "02_statistics_eda.ipynb",
+      "code_cells": 5,
+      "images": 3,
+      "html_outputs": 3,
+      "seconds": 7.01,
+      "sha256": "68167a465c9c26511ccfd849212ee749596345398faa2816ee4c84d453c8963f"
+    },
+    {
+      "file": "03_data_cleaning.ipynb",
+      "code_cells": 3,
+      "images": 0,
+      "html_outputs": 3,
+      "seconds": 4.16,
+      "sha256": "9a1812bf2fb0802c9190c1be8f304547013d69ea7466c35bae52a480274a2907"
+    },
+    {
+      "file": "04_data_transformation.ipynb",
+      "code_cells": 3,
+      "images": 1,
+      "html_outputs": 3,
+      "seconds": 4.75,
+      "sha256": "bf67c17c5d4c39b22de664bfa48700e436016b451d397d2724ef1a6c3442c8d8"
+    },
+    {
+      "file": "05_clustering.ipynb",
+      "code_cells": 4,
+      "images": 2,
+      "html_outputs": 3,
+      "seconds": 7.68,
+      "sha256": "e034dd917b7594d6688c1a57fac3fd73e72f68ed72ca312a50e7ff26310d5600"
+    },
+    {
+      "file": "06_model_evaluation.ipynb",
+      "code_cells": 5,
+      "images": 1,
+      "html_outputs": 3,
+      "seconds": 9.0,
+      "sha256": "fdbe1f41861b5db56cdf879bc024d95521cbb9ebd6d64301644f7a9932135947"
+    },
+    {
+      "file": "07_player_profiling.ipynb",
+      "code_cells": 5,
+      "images": 3,
+      "html_outputs": 2,
+      "seconds": 6.53,
+      "sha256": "b602b9337e2af0237cf8edd262656a7261043e58338276821988ae705b3d9899"
+    },
+    {
+      "file": "08_prediction_strategy.ipynb",
+      "code_cells": 4,
+      "images": 0,
+      "html_outputs": 3,
+      "seconds": 4.26,
+      "sha256": "a73569396696d20cee891da87f03a3be5f1723195cca1ad754b0853dc5358979"
+    }
+  ]
+}

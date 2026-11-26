@@ -437,6 +437,8 @@ Kết quả và giới hạn kiểm tra xem deliverables/KIEM_TRA_BAN_GIAO.txt.
 
 Chỉ số nội bộ chưa chứng minh hiệu quả thương mại; chiến lược trong báo cáo là giả thuyết A/B test.
 '''
+    if (ROOT / 'notebooks').is_dir():
+        text += '\n## Jupyter Notebook\n\nXem [notebook tổng hợp](notebooks/00_Gamer_Behavior_Clustering.ipynb) và [hướng dẫn tám notebook theo bước](notebooks/README.md). Cài requirements-notebook.txt trước khi chọn kernel và Run All.\n'
     (ROOT/'README.md').write_text(text,encoding='utf-8')
 
 

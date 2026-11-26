@@ -10,3 +10,5 @@ data/dataset.zip
 outputs/write_check.txt
 deliverables/slide_previews/*.PNG
 !deliverables/slide_previews/slide_*.png
+.ipynb_checkpoints/
+outputs/notebook/
