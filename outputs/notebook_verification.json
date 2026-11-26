@@ -39,7 +39,7 @@
       "images": 10,
       "html_outputs": 24,
       "seconds": 52.5,
-      "sha256": "cc19e1ae01d3f99df35a69a1a03198b1df107bcb1e4e6be5d6c1787befd3250c"
+      "sha256": "7a61c29fcf1644e156092dabfa8eab8ea4a4906817c66539df65bdc1d6b51c2d"
     },
     {
       "file": "01_data_understanding.ipynb",
@@ -47,7 +47,7 @@
       "images": 0,
       "html_outputs": 4,
       "seconds": 4.11,
-      "sha256": "590efe9fbc9bc3225f14b79ff07a1b1a598733069494539aca8c6c34b5840b82"
+      "sha256": "273a338c0f6f434ba01cd8fa94ecd7d185e5193313095f7a13bd0134dd815132"
     },
     {
       "file": "02_statistics_eda.ipynb",
@@ -55,7 +55,7 @@
       "images": 3,
       "html_outputs": 3,
       "seconds": 7.01,
-      "sha256": "68167a465c9c26511ccfd849212ee749596345398faa2816ee4c84d453c8963f"
+      "sha256": "fa4ee5475c1a7d4c1eb4ee0de47921dcf123cf43eb5aae7c5a682c9fd3eec10d"
     },
     {
       "file": "03_data_cleaning.ipynb",
@@ -63,7 +63,7 @@
       "images": 0,
       "html_outputs": 3,
       "seconds": 4.16,
-      "sha256": "9a1812bf2fb0802c9190c1be8f304547013d69ea7466c35bae52a480274a2907"
+      "sha256": "fa7496256364e6a13bbbc0685a67b2cd058cfb2c4906d4f1646b966463fc3d39"
     },
     {
       "file": "04_data_transformation.ipynb",
@@ -71,7 +71,7 @@
       "images": 1,
       "html_outputs": 3,
       "seconds": 4.75,
-      "sha256": "bf67c17c5d4c39b22de664bfa48700e436016b451d397d2724ef1a6c3442c8d8"
+      "sha256": "5913bc9602afbf3634a2ec4e188de75affc4f53456413928dcda3240b66dce88"
     },
     {
       "file": "05_clustering.ipynb",
@@ -79,7 +79,7 @@
       "images": 2,
       "html_outputs": 3,
       "seconds": 7.68,
-      "sha256": "e034dd917b7594d6688c1a57fac3fd73e72f68ed72ca312a50e7ff26310d5600"
+      "sha256": "22c7ede3855db1dedefd823b80d033cd59dd1cc06667d8de16b27bdb978b5afa"
     },
     {
       "file": "06_model_evaluation.ipynb",
@@ -87,7 +87,7 @@
       "images": 1,
       "html_outputs": 3,
       "seconds": 9.0,
-      "sha256": "fdbe1f41861b5db56cdf879bc024d95521cbb9ebd6d64301644f7a9932135947"
+      "sha256": "ef59d0483fd8e53942a957478188f3857abe2c7f37dfaa558441ef48ea6d5741"
     },
     {
       "file": "07_player_profiling.ipynb",
@@ -95,7 +95,7 @@
       "images": 3,
       "html_outputs": 2,
       "seconds": 6.53,
-      "sha256": "b602b9337e2af0237cf8edd262656a7261043e58338276821988ae705b3d9899"
+      "sha256": "03022c8e8233d1ead5d8bad208f2223cfad6c87947b72bd212d9ebe2ec36424b"
     },
     {
       "file": "08_prediction_strategy.ipynb",
@@ -103,7 +103,8 @@
       "images": 0,
       "html_outputs": 3,
       "seconds": 4.26,
-      "sha256": "a73569396696d20cee891da87f03a3be5f1723195cca1ad754b0853dc5358979"
+      "sha256": "bfcaf8531b270b510c2a668cc8b5962d0bc1cc6bf0b5cedce3b64d0938ce9912"
     }
-  ]
+  ],
+  "notebook_line_endings": "LF; identical notebook content and execution outputs preserved"
 }

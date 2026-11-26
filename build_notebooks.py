@@ -604,7 +604,8 @@ def write_notebook(name, cells):
     for i, cell in enumerate(book.cells):
         cell.id = hashlib.sha256(f'{name}:{i}:{cell.source}'.encode()).hexdigest()[:12]
     nbf.validate(book)
-    nbf.write(book, DEST / f'{name}.ipynb')
+    with (DEST / f'{name}.ipynb').open('w', encoding='utf-8', newline='\n') as stream:
+        nbf.write(book, stream)
 
 
 def main():

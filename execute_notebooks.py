@@ -61,7 +61,8 @@ def execute(path, workspace):
     assert not any(o.output_type == 'error' for c in code_cells for o in c.outputs), 'Có output lỗi.'
     image_count = sum('image/png' in o.get('data', {}) for c in code_cells for o in c.outputs)
     table_count = sum('text/html' in o.get('data', {}) for c in code_cells for o in c.outputs)
-    nbformat.write(executed, path)
+    with path.open('w', encoding='utf-8', newline='\n') as stream:
+        nbformat.write(executed, stream)
     result = {'file': path.name, 'code_cells': len(code_cells), 'images': image_count,
               'html_outputs': table_count, 'seconds': round(time.perf_counter() - start, 2),
               'sha256': hashlib.sha256(path.read_bytes()).hexdigest()}
